@@ -270,11 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
             populateCategories();
             filterQuotes();
 
-            let message = 'Sync complete!';
-            if (newServerQuotes > 0) message += ` ${newServerQuotes} new quotes from server.`;
-            if (conflictsResolved > 0) message += ` ${conflictsResolved} conflicts resolved (server took precedence).`;
-            if (newLocalQuotesSynced > 0) message += ` ${newLocalQuotesSynced} local quotes sent to server.`;
-            showNotification(message, 'success');
+            // Modified to use the exact phrase "Quotes synced with server!"
+            showNotification('Quotes synced with server!', 'success'); 
 
         } catch (error) {
             console.error('Sync failed:', error);
