@@ -40,6 +40,33 @@
         button {
             cursor: pointer;
         }
+        #syncStatus { /* New style for notifications */
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            display: none; /* Hidden by default */
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .sync-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .sync-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .sync-info {
+            background-color: #cfe2ff;
+            color: #052c65;
+            border-color: #b9d8fc;
+        }
     </style>
 </head>
 <body>
@@ -65,9 +92,8 @@
         <button id="exportBtn">Export Quotes</button>
         <label for="importFile">Import from JSON:</label>
         <input type="file" id="importFile" accept=".json"/>
-    </div>
+        <hr> <button id="syncBtn">Sync with Server</button> </div>
 
-
-    <script src="script.js"></script>
+    <div id="syncStatus"></div> <script src="script.js"></script>
 </body>
 </html>
