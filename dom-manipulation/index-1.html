@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        #quoteDisplay {
+            margin-bottom: 20px;
+            font-style: italic;
+            font-size: 1.2em;
+            text-align: center;
+            min-height: 40px;
+        }
+        .quote-container, .form-container, .data-management-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+        #categoryFilter, button, input {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin: 5px;
+        }
+        button {
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #importFile {
+            border: none;
+        }
+        #exportBtn {
+            background-color: #2ecc71;
+        }
+        #exportBtn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamic Quote Generator</h1>
+
+    <div class="quote-container">
+        <div id="quoteDisplay">Loading your last viewed quote...</div>
+        <p id="quoteAuthor" style="text-align: right;"></p>
+        <button id="newQuote">Show New Quote</button>
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+        </select>
+    </div>
+
+    <div id="addQuoteFormContainer"></div>
+
+    <div class="data-management-container">
+        <h2>Data Management</h2>
+        <button id="exportBtn">Export to JSON</button>
+        <label for="importFile">Import from JSON:</label>
+        <input type="file" id="importFile" accept=".json"/>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
