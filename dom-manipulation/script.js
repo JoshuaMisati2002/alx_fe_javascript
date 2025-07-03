@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const storedQuotes = localStorage.getItem('quotes');
         quotes = storedQuotes ? JSON.parse(storedQuotes) : initialQuotes;
         saveQuotes(); // Ensures initial quotes are saved on first visit
+
+        // Restore last selected category filter
+        const lastFilter = localStorage.getItem('lastCategoryFilter');
+        if (lastFilter) {
+            categoryFilter.value = lastFilter;
+        }
     }
 
     function showLastViewedQuote() {
@@ -44,17 +50,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Core Application Logic ---
     function populateCategories() {
         const categories = [...new Set(quotes.map(quote => quote.category))];
-        categoryFilter.innerHTML = '<option value="all">All</option>'; // Reset
-        categories.forEach(category => {
+        categoryFilter.innerHTML = '<option value="all">All Categories</option>'; // Reset with "All Categories"
+        categories.sort().forEach(category => { // Sort categories alphabetically
             const option = document.createElement('option');
             option.value = category;
             option.textContent = category;
             categoryFilter.appendChild(option);
         });
+
+        // Ensure the previously selected filter is re-applied after repopulating
+        const lastFilter = localStorage.getItem('lastCategoryFilter');
+        if (lastFilter && categories.includes(lastFilter)) {
+            categoryFilter.value = lastFilter;
+        } else {
+            categoryFilter.value = 'all'; // Default to 'all' if the category no longer exists
+        }
     }
 
-    function showRandomQuote() {
+    // New function to filter quotes based on selected category
+    function filterQuotes() {
         const selectedCategory = categoryFilter.value;
+        localStorage.setItem('lastCategoryFilter', selectedCategory); // Save the selected filter
+
+        showRandomQuote(); // Display a random quote from the *currently filtered* list
+    }
+
+
+    function showRandomQuote() {
+        const selectedCategory = categoryFilter.value; // Get the currently selected category
         const filteredQuotes = selectedCategory === 'all'
             ? quotes
             : quotes.filter(quote => quote.category === selectedCategory);
@@ -83,7 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
             saveQuotes(); // Save the updated array to local storage
             document.getElementById('newQuoteText').value = '';
             document.getElementById('newQuoteCategory').value = '';
-            populateCategories(); // Update the category filter
+            populateCategories(); // Update the category filter dropdown if a new category was added
+            // After adding, apply the current filter or show a random quote from all
+            filterQuotes(); // This will also save the current filter
             alert('New quote added successfully!');
         } else {
             alert('Please fill in both the quote and its category.');
@@ -129,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(importedQuotes)) {
                     quotes.push(...importedQuotes); // Add new quotes to the existing array
                     saveQuotes(); // Save the merged array
-                    populateCategories(); // Update UI
+                    populateCategories(); // Update UI with potentially new categories
+                    filterQuotes(); // Re-apply filter and show a quote from the potentially updated list
                     alert('Quotes imported successfully!');
                 } else {
                     alert('Invalid JSON format. File must contain an array of quotes.');
@@ -143,13 +169,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners & Initial Setup ---
     newQuoteBtn.addEventListener('click', showRandomQuote);
-    categoryFilter.addEventListener('change', showRandomQuote);
+    // Use JS event listener for category filter, as it's more robust than inline onchange
+    categoryFilter.addEventListener('change', filterQuotes); 
     exportBtn.addEventListener('click', exportToJson);
     importFile.addEventListener('change', importFromJsonFile);
 
     // Run functions on page load
     loadQuotes();
-    populateCategories();
+    populateCategories(); // Populate categories after loading quotes
     createAddQuoteForm();
     showLastViewedQuote();
+    filterQuotes(); // Apply the saved filter or default 'all'
 });
