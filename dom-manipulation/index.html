@@ -17,11 +17,13 @@
             font-style: italic;
             font-size: 1.2em;
         }
-        .quote-container {
+        .quote-container, .form-container, .data-management-container {
             margin-top: 20px;
             border: 1px solid #ccc;
             padding: 20px;
             border-radius: 5px;
+            width: 90%;
+            max-width: 500px;
         }
         #categoryFilter {
             margin-bottom: 20px;
@@ -31,8 +33,12 @@
             border-top: 2px solid #eee;
             padding-top: 20px;
         }
-        input[type="text"] {
-            margin-right: 10px;
+        input[type="text"], button, select {
+            padding: 8px;
+            margin: 5px;
+        }
+        button {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -53,6 +59,14 @@
     </div>
 
     <div id="addQuoteFormContainer"></div>
+
+    <div class="data-management-container">
+        <h2>Data Management</h2>
+        <button id="exportBtn">Export to JSON</button>
+        <label for="importFile">Import from JSON:</label>
+        <input type="file" id="importFile" accept=".json"/>
+    </div>
+
 
     <script src="script.js"></script>
 </body>
